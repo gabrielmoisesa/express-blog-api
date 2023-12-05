@@ -1,14 +1,17 @@
 const { User } = require('../models');
-const { schemas, handle } = require('./common');
+const { schemas, handle, generateToken } = require('./common');
 
-const getByEmail = async (email, password) => {
+const authWithToken = async (email, password) => {
   const { error } = schemas.login.validate({ email, password });
   if (error) return handle.error(error);
   
   const user = await User.findOne({ where: { email } });
-  return handle.getData(user);
+  if (!user) return handle.error({ message: 'Invalid fields' });
+
+  const token = generateToken(user);
+  return handle.getData({ token });
 };
 
 module.exports = {
-  getByEmail,
+  authWithToken,
 };
