@@ -1,6 +1,5 @@
-const schemas = require('./schemas');
 const { User } = require('../models');
-const handle = require('./handlers');
+const { schemas, handle } = require('./common');
 
 const getByEmail = async (email, password) => {
   const { error } = schemas.login.validate({ email, password });
