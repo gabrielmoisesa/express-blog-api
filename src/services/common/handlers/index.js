@@ -1,8 +1,8 @@
 const response = (status, data) => ({ status, data });
 
 const getData = (data) => {
-  if (data) return response('OK', data);
-  return response('BAD_REQUEST', { message: 'Invalid fields' });
+  if (!data) return response('NOT_FOUND', { message: 'No data avaible' });
+  return response('OK', data); 
 };
 
 const create = (data) => response('CREATED', data);
