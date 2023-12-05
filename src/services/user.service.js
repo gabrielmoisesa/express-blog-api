@@ -1,8 +1,10 @@
 const { User } = require('../models');
+const { removeKey } = require('../utils');
 const { schemas, handle, generateToken } = require('./common');
 
 const getAll = async () => {
-  const users = await User.findAll();
+  const usersFromDB = await User.findAll();
+  const users = usersFromDB.map((user) => removeKey(user.dataValues, 'password'));
   return handle.getData(users);
 };
 
