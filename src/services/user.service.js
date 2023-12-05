@@ -8,6 +8,13 @@ const getAll = async () => {
   return handle.getData(users);
 };
 
+const getById = async (id) => {
+  const userFromDB = await User.findByPk(id);
+  if (!userFromDB) return handle.error({ message: 'User does not exist' });
+  const user = removeKey(userFromDB.dataValues, 'password');
+  return handle.getData(user, 'user');
+};
+
 const create = async (user) => {
   const { error } = schemas.user.validate(user);
   if (error) return handle.error(error);
@@ -22,5 +29,6 @@ const create = async (user) => {
 
 module.exports = {
   getAll,
+  getById,
   create,
 };

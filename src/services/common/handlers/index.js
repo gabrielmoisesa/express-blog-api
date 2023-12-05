@@ -13,8 +13,9 @@ const error = (err) => {
   if (message.includes('required') || message.includes('empty')) {
     return response('BAD_REQUEST', { message: 'Some required fields are missing' });
   }
-
   if (message.includes('already registered')) return response('CONFLICT', { message });
+
+  if (message.includes('not exist')) return response('NOT_FOUND', { message });
   
   return response('BAD_REQUEST', { message });
 };
