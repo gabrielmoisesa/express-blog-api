@@ -7,21 +7,24 @@ const getData = (data) => {
 
 const create = (data) => response('CREATED', data);
 
-const error = (err) => {
-  const { message } = err;
+const error = (errorMessage, useDefaultRequiredMessage = false) => {
+  const { message } = errorMessage;
 
-  if (message.includes('required') || message.includes('empty')) {
+  if (useDefaultRequiredMessage) {
     return response('BAD_REQUEST', { message: 'Some required fields are missing' });
   }
-  if (message.includes('already registered')) return response('CONFLICT', { message });
-
-  if (message.includes('not exist')) return response('NOT_FOUND', { message });
   
   return response('BAD_REQUEST', { message });
 };
+
+const conflict = (message) => response('CONFLICT', { message });
+
+const notFound = (message) => response('NOT_FOUND', { message });
 
 module.exports = {
   getData,
   create,
   error,
+  conflict,
+  notFound,
 };
