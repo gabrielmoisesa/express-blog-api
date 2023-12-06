@@ -22,8 +22,8 @@ const create = async (user) => {
   const existingUser = await User.findOne({ where: { email: user.email } });
   if (existingUser) return handle.conflict('User already registered');
 
-  await User.create(user);
-  const token = generateToken(user);
+  const createdUser = await User.create(user);
+  const token = generateToken(createdUser.dataValues);
   return handle.create({ token });
 };
 

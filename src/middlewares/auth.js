@@ -17,6 +17,15 @@ const validateJWT = (req, res, next) => {
   }
 };
 
+const userIdFromToken = (req, _res, next) => {
+  const bearerToken = req.header('Authorization');
+  const token = extractToken(bearerToken);
+  const decoded = jwt.verify(token, secret);
+  req.userId = decoded.payload.id;
+  next();
+};
+
 module.exports = {
   validateJWT,
+  userIdFromToken,
 };

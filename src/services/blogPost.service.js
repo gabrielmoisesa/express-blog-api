@@ -7,8 +7,7 @@ const create = async (title, content, userId, categoryIds) => {
 
   const foundCategs = await Category.findAndCountAll({ where: { id: categoryIds } });
   if (foundCategs.count !== categoryIds.length) {
-    console.log('Categories not found', foundCategs.count);
-    return handle.error('Categories not found');
+    return handle.error({ message: 'one or more "categoryIds" not found' });
   }
 
   const blogPost = await BlogPost.create({ title, content, userId });
