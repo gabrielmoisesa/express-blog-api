@@ -3,7 +3,7 @@ const { schemas, handle, generateToken } = require('./common');
 
 const authWithToken = async (email, password) => {
   const { error } = schemas.login.validate({ email, password });
-  if (error) return handle.error(error);
+  if (error) return handle.error(error, true);
   
   const user = await User.findOne({ where: { email } });
   if (!user) return handle.error({ message: 'Invalid fields' });

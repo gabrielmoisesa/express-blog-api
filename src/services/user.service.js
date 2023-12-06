@@ -10,7 +10,7 @@ const getAll = async () => {
 
 const getById = async (id) => {
   const userFromDB = await User.findByPk(id);
-  if (!userFromDB) return handle.notFound({ message: 'User does not exist' });
+  if (!userFromDB) return handle.notFound('User does not exist');
   const user = removeKey(userFromDB.dataValues, 'password');
   return handle.getData(user, 'user');
 };
@@ -20,7 +20,7 @@ const create = async (user) => {
   if (error) return handle.error(error);
 
   const existingUser = await User.findOne({ where: { email: user.email } });
-  if (existingUser) return handle.conflict({ message: 'User already registered' });
+  if (existingUser) return handle.conflict('User already registered');
 
   await User.create(user);
   const token = generateToken(user);
