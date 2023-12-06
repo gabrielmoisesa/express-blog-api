@@ -14,7 +14,10 @@ const login = Joi.object({
   password: userSchema.password,
 });
 
+const categoryName = Joi.string().required();
+
 module.exports = {
   user,
   login,
+  categoryName,
 };
