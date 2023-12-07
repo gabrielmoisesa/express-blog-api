@@ -6,6 +6,12 @@ const get = async (req, res) => {
   res.status(httpMap(status)).json(data);
 };
 
+const getById = async (req, res) => {
+  const { id } = req.params;
+  const { status, data } = await blogPostService.getById(id);
+  res.status(httpMap(status)).json(data);
+};
+
 const post = async (req, res) => {
   const { title, content, categoryIds } = req.body;
   const { userId } = req;
@@ -15,5 +21,6 @@ const post = async (req, res) => {
 
 module.exports = {
   get,
+  getById,
   post,
 };

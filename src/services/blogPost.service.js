@@ -2,13 +2,24 @@ const { BlogPost, Category, PostCategory, User } = require('../models');
 const { schemas, handle } = require('./common');
 
 const getAll = async () => {
-  const blogPostsFromDB = await BlogPost.findAll({
+  const blogPosts = await BlogPost.findAll({
     include: [
       { model: User, as: 'user', attributes: { exclude: ['password'] } },
       { model: Category, as: 'categories', through: { attributes: [] } },
     ],
   });
-  return handle.getData(blogPostsFromDB);
+  return handle.getData(blogPosts);
+};
+
+const getById = async (id) => {
+  const blogPost = await BlogPost.findByPk(id, {
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  if (!blogPost) return handle.notFound('Post does not exist');
+  return handle.getData(blogPost);
 };
 
 const create = async (title, content, userId, categoryIds) => {
@@ -30,5 +41,6 @@ const create = async (title, content, userId, categoryIds) => {
 
 module.exports = {
   getAll,
+  getById,
   create,
 };
