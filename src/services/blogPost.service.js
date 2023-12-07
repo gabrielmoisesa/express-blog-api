@@ -1,5 +1,15 @@
-const { BlogPost, Category, PostCategory } = require('../models');
+const { BlogPost, Category, PostCategory, User } = require('../models');
 const { schemas, handle } = require('./common');
+
+const getAll = async () => {
+  const blogPostsFromDB = await BlogPost.findAll({
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  return handle.getData(blogPostsFromDB);
+};
 
 const create = async (title, content, userId, categoryIds) => {
   const { error } = schemas.blogPost.validate({ title, content, userId, categoryIds });
@@ -19,5 +29,6 @@ const create = async (title, content, userId, categoryIds) => {
 };
 
 module.exports = {
+  getAll,
   create,
 };
