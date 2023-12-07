@@ -39,8 +39,19 @@ const create = async (title, content, userId, categoryIds) => {
   return handle.create(blogPost.dataValues);
 };
 
+const update = async (title, content, postId, userId) => {
+  const { error } = schemas.updateBlogPost.validate({ title, content });
+  if (error) return handle.error(error, true);
+
+  await BlogPost.update({ title, content }, { where: { id: postId, userId } });
+  
+  const updatedPost = await getById(postId);
+  return updatedPost;
+};
+
 module.exports = {
   getAll,
   getById,
   create,
+  update,
 };

@@ -7,6 +7,13 @@ const userSchema = {
   image: Joi.string(),
 };
 
+const blogPostSchema = {
+  title: Joi.string().required(),
+  content: Joi.string().required(),
+  userId: Joi.number().required(),
+  categoryIds: Joi.array().items(Joi.number()).required(),
+};
+
 const user = Joi.object({ ...userSchema });
 
 const login = Joi.object({
@@ -16,16 +23,14 @@ const login = Joi.object({
 
 const categoryName = Joi.string().required().label('name');
 
-const blogPost = Joi.object({
-  title: Joi.string().required(),
-  content: Joi.string().required(),
-  userId: Joi.number().required(),
-  categoryIds: Joi.array().items(Joi.number()).required(),
-});
+const blogPost = Joi.object({ ...blogPostSchema });
+
+const updateBlogPost = Joi.object({ title: blogPostSchema.title, content: blogPostSchema.content });
 
 module.exports = {
   user,
   login,
   categoryName,
   blogPost,
+  updateBlogPost,
 };

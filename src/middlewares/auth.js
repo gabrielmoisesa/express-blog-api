@@ -1,4 +1,5 @@
 const { secret, jwt } = require('../utils');
+const { BlogPost } = require('../models');
 
 const extractToken = (bearerToken) => bearerToken.split(' ')[1];
 
@@ -25,7 +26,16 @@ const userIdFromToken = (req, _res, next) => {
   next();
 };
 
+const postUpdate = async (req, res, next) => {
+  const { userId } = req;
+  const { id } = req.params;
+  const foundPostByIds = await BlogPost.findOne({ where: { id, userId } });
+  if (!foundPostByIds) return res.status(401).json({ message: 'Unauthorized user' });
+  next();
+};
+
 module.exports = {
   validateJWT,
   userIdFromToken,
+  postUpdate,
 };
