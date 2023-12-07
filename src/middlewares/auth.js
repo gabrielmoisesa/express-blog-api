@@ -26,7 +26,7 @@ const userIdFromToken = (req, _res, next) => {
   next();
 };
 
-const postUpdate = async (req, res, next) => {
+const postAuthor = async (req, res, next) => {
   const { userId } = req;
   const { id } = req.params;
   const foundPostByIds = await BlogPost.findOne({ where: { id, userId } });
@@ -37,5 +37,5 @@ const postUpdate = async (req, res, next) => {
 module.exports = {
   validateJWT,
   userIdFromToken,
-  postUpdate,
+  postAuthor,
 };
