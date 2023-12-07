@@ -6,4 +6,5 @@ module.exports = {
   handle,
   schemas,
   generateToken,
+  excludePassword: { attributes: { exclude: ['password'] } },
 };

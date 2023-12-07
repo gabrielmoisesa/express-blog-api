@@ -1,13 +1,13 @@
 const { User } = require('../models');
-const { schemas, handle, generateToken } = require('./common');
+const { schemas, handle, generateToken, excludePassword } = require('./common');
 
 const getAll = async () => {
-  const users = await User.findAll({ attributes: { exclude: ['password'] } });
+  const users = await User.findAll(excludePassword);
   return handle.getData(users);
 };
 
 const getById = async (id) => {
-  const user = await User.findByPk(id, { attributes: { exclude: ['password'] } });
+  const user = await User.findByPk(id, excludePassword);
   if (!user) return handle.notFound('User does not exist');
   return handle.getData(user, 'user');
 };
