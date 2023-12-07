@@ -27,9 +27,16 @@ const put = async (req, res) => {
   res.status(httpMap(status)).json(data);
 };
 
+const deleteById = async (req, res) => {
+  const { id } = req.params;
+  const { status, data } = await blogPostService.deleteById(id);
+  res.status(httpMap(status)).json(data);
+};
+
 module.exports = {
   get,
   getById,
   post,
   put,
+  deleteById,
 };

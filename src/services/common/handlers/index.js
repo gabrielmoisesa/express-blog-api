@@ -21,10 +21,13 @@ const conflict = (message) => response('CONFLICT', { message });
 
 const notFound = (message) => response('NOT_FOUND', { message });
 
+const noContent = () => response('NO_CONTENT', {});
+
 module.exports = {
   getData,
   create,
   error,
   conflict,
   notFound,
+  noContent,
 };

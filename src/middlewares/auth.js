@@ -29,8 +29,9 @@ const userIdFromToken = (req, _res, next) => {
 const postAuthor = async (req, res, next) => {
   const { userId } = req;
   const { id } = req.params;
-  const foundPostByIds = await BlogPost.findOne({ where: { id, userId } });
-  if (!foundPostByIds) return res.status(401).json({ message: 'Unauthorized user' });
+  const foundPost = await BlogPost.findOne({ where: { id } });
+  if (!foundPost) return res.status(404).json({ message: 'Post does not exist' });
+  if (foundPost.userId !== userId) return res.status(401).json({ message: 'Unauthorized user' });
   next();
 };
 

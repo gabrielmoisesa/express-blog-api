@@ -8,5 +8,12 @@ router.get('/', auth.validateJWT, blogPostController.get);
 router.get('/:id', auth.validateJWT, blogPostController.getById);
 router.post('/', auth.validateJWT, auth.userIdFromToken, blogPostController.post);
 router.put('/:id', auth.validateJWT, auth.userIdFromToken, auth.postAuthor, blogPostController.put);
+router.delete(
+  '/:id',
+  auth.validateJWT,
+  auth.userIdFromToken,
+  auth.postAuthor,
+  blogPostController.deleteById,
+);
 
 module.exports = router;
