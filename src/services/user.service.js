@@ -24,8 +24,16 @@ const create = async (user) => {
   return handle.create({ token });
 };
 
+const deleteById = async (id) => {
+  const user = await User.findByPk(id);
+  if (!user) return handle.notFound('User does not exist');
+  await User.destroy({ where: { id } });
+  return handle.noContent();
+};
+
 module.exports = {
   getAll,
   getById,
   create,
+  deleteById,
 };
