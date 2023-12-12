@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { BlogPost, Category, PostCategory, User } = require('../models');
 const { schemas, handle } = require('./common');
 
@@ -20,6 +21,22 @@ const getById = async (id) => {
   });
   if (!blogPost) return handle.notFound('Post does not exist');
   return handle.getData(blogPost);
+};
+
+const getByQuery = async (q) => {
+  const blogPosts = await BlogPost.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.like]: `%${q}%` } },
+        { content: { [Op.like]: `%${q}%` } },
+      ],
+    },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  return handle.getData(blogPosts);
 };
 
 const create = async (title, content, userId, categoryIds) => {
@@ -55,4 +72,4 @@ const deleteById = async (id) => {
   return handle.noContent();
 };
 
-module.exports = { getAll, getById, create, update, deleteById };
+module.exports = { getAll, getById, getByQuery, create, update, deleteById };

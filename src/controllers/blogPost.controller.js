@@ -12,6 +12,12 @@ const getById = async (req, res) => {
   res.status(httpMap(status)).json(data);
 };
 
+const getByQuery = async (req, res) => {
+  const { q } = req.query;
+  const { status, data } = await blogPostService.getByQuery(q);
+  res.status(httpMap(status)).json(data);
+};
+
 const post = async (req, res) => {
   const { title, content, categoryIds } = req.body;
   const { userId } = req;
@@ -36,6 +42,7 @@ const deleteById = async (req, res) => {
 module.exports = {
   get,
   getById,
+  getByQuery,
   post,
   put,
   deleteById,
